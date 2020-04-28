@@ -69,13 +69,35 @@ The plugin creates a number of new function:
   calculateDiff(diff, fieldName);
 ```
 
+## Example
 ```javascript
- const Mongoose = require('mongoose');
+  const Mongoose = require('mongoose');
+  const Address = require('./model/address');
+  // example of a session object is stored in test/model
+  const Session = require('./model/session');
+  Mongoose.connect('mongodb://localhost:27017/test', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+  
+  let addr = Address.create(session,{guid: '123211', name: 'Doe', firstName: 'John'})
+  // this will do anything with the session  
+  await addr.save();
+  addr.firstName = 'Jane';
+  await addr.save();
+  
+  let hist = await addr.history();
+  for (let l = 0; l < hist.length; l++) {
+    console.log('user: ', hist[l].changedBy, ', on: ', hist[l].createdAt, ', reason: ', hist[l].reason);
+  }
+ 
+}
 
- Mongoose.connect('mongodb://localhost:27017/test', {
-   useNewUrlParser: true,
-   useUnifiedTopology: true
- });
+
+
+
+   
+
 ```
 
 
