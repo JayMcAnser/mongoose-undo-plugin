@@ -21,8 +21,10 @@ let _validateSession = (session) => {
 const UndoHelper = {
   create: (session, rec) =>{
     _validateSession(session);
-    rec.created.by = session.name;
-    rec.created.reason = session.reason;
+    if (rec.created) {
+      rec.created.by = session.name;
+      rec.created.reason = session.reason;
+    }
     rec.__user = session.name;
     rec.__reason = session.reason;
     return rec;

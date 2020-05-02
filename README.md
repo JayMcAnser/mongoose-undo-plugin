@@ -88,7 +88,7 @@ The plugin creates a number of new function:
   
   let hist = await addr.history();
   for (let l = 0; l < hist.length; l++) {
-    console.log('user: ', hist[l].changedBy, ', on: ', hist[l].createdAt, ', reason: ', hist[l].reason);
+    console.log(`user: ${hist[l].changedBy}, on: ${hist[l].createdAt}, reason: ${hist[l].reason}`);
   }
  
 }
