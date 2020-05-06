@@ -50,6 +50,19 @@ describe('model.address', () => {
       assert.equal(hist[0].changedBy, session.name)
     });
 
+    it('not found queryOne', async() => {
+      let addr = await Address.queryOne(session,{guid: 'XXXXXXX'});
+      assert.equal(addr, false)
+    });
+    it('not found queryById', async() => {
+      let addr = await Address.queryById(session, '123123123123');
+      assert.equal(addr, false)
+    })
+    it('not found query', async() => {
+      let addr = await Address.query(session,{guid: 'XXXXXXX'});
+      assert.equal(addr.length, 0)
+    })
+
   })
 
 
@@ -198,4 +211,5 @@ describe('model.address', () => {
       assert.equal(addr.telephone[1].number, '123456')
     });
   });
+
 });

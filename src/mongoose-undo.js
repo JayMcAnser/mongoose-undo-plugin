@@ -19,32 +19,84 @@ let _validateSession = (session) => {
 }
 
 const UndoHelper = {
+  /**
+   * assign the session to the object
+   *
+   * @param obj
+   * @param session
+   * @private
+   */
+  _assignSession(obj, session, asCreate = false) {
+    if (session.setInfo !== undefined) {
+      session.setInfo(obj)
+    } else {
+      if (asCreate) {
+        obj.by = session.name
+        obj.reason = session.reason;
+      } else {
+        obj.__user = session.name;
+        obj.__reason = session.reason;
+      }
+    }
+  },
+
   create: (session, rec) =>{
     _validateSession(session);
-    if (rec.created) {
-      rec.created.by = session.name;
-      rec.created.reason = session.reason;
+    if (rec.created !== undefined) {
+      UndoHelper._assignSession(rec.created, session, true);
+      // rec.created.by = session.name;
+      // rec.created.reason = session.reason;
     }
-    rec.__user = session.name;
-    rec.__reason = session.reason;
+    UndoHelper._assignSession(rec, session)
+    // rec.__user = session.name;
+    // rec.__reason = session.reason;
     return rec;
+  },
+
+  /**
+   * make a sessional object out of the result
+   * @param session
+   * @param data
+   * @return {*}
+   */
+  session:(session, data) => {
+    if (_.isArray(data)) {
+      for (let l = 0; l < data.length; l++) {
+        UndoHelper._assignSession(data[l], session);
+        // data[l].__user = session.name;
+        // data[l].__reason = session.reason;
+      }
+    } else {
+      UndoHelper._assignSession(data, session);
+      // data.__user = session.name;
+      // data.__reason = session.reason;
+    }
+    return data;
   },
 
   queryOne: (session, model, where, fields, options) => {
     _validateSession(session);
     return model.findOne(where, fields, options).then( (rec) => {
-      rec.__user = session.name;
-      rec.__reason = session.reason;
-      return rec;
+      if (rec) {
+        UndoHelper._assignSession(rec, session);
+        // rec.__user = session.name;
+        // rec.__reason = session.reason;
+        return rec;
+      }
+      return false;
     });
   },
 
   queryById: (session, model, id, fields, options) => {
     _validateSession(session);
-    return this.findById(id, fields, options).then( (rec) => {
-      rec.__user = session.name;
-      rec.__reason = session.reason;
-      return rec;
+    return model.findById(id, fields, options).then( (rec) => {
+      if (rec) {
+        UndoHelper._assignSession(rec, session);
+        // rec.__user = session.name;
+        // rec.__reason = session.reason;
+        return rec;
+      }
+      return false;
     });
   },
 
@@ -52,8 +104,9 @@ const UndoHelper = {
     _validateSession(session);
     return model.find(where, fields, options).then((recs) => {
       for (let l = 0; l < recs.length; l++) {
-        recs[l].__user = session.name;
-        recs[l].__reason = session.reason;
+        UndoHelper._assignSession(recs[l], session);
+        // recs[l].__user = session.name;
+        // recs[l].__reason = session.reason;
       }
       return recs;
     });
@@ -94,8 +147,9 @@ const UndoHelper = {
     _validateSession(session);
     // return DiffHistory.getVersion(Mongoose.model('Address'), this.id, index, options).then( (rec) => {
     return DiffHistory.getVersion(model, id, versionIndex, options).then( (rec) => {
-      rec.__user = session.name;
-      rec.__reason = session.reason;
+      UndoHelper._assignSession(rec, session);
+      // rec.__user = session.name;
+      // rec.__reason = session.reason;
       return rec;
     })
   },
@@ -394,7 +448,7 @@ module.exports.plugin = function(schema, options) {
   }
 
   schema.statics.query = function(session, where, fields, options) {
-    return UndoHelper.query(session, model, where, fields, options);
+    return UndoHelper.query(session, this, where, fields, options);
   }
 
   schema.methods.getVersion = function(session, index, options) {
