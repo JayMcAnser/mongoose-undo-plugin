@@ -483,7 +483,7 @@ module.exports.plugin = function(schema, options) {
     return UndoHelper.calculateDiff(diff, fieldName)
   }
 
-  schema.statics.session = function(session) {
+  schema.methods.session = function(session) {
     UndoHelper._assignSession(this, session);
   }
 }
