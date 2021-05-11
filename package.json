@@ -14,7 +14,7 @@
     "config": "^3.3.1",
     "error-types": "git+https://github.com/jaymcanser/error-types.git",
     "jsondiffpatch": "^0.4.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "logger": "git+https://github.com/jaymcanser/logger.git",
     "mongoose": "^5.9.9",
     "mongoose-diff-history": "git+https://github.com/JayMcAnser/mongoose-diff-history.git"
