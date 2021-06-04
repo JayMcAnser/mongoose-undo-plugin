@@ -12,8 +12,8 @@ const Mongoose = require('mongoose');
 const _ = require('lodash');
 
 let _validateSession = (session) => {
-  if (typeof session !== 'object' || session.constructor.name !== 'Session') {
-    throw new Error('no session given')
+  if (typeof session !== 'object' || !session.user) {
+    throw new Error('no session given or no session active')
   }
   return true;
 }
@@ -31,10 +31,10 @@ const UndoHelper = {
       session.setInfo(obj)
     } else {
       if (asCreate) {
-        obj.by = session.name
+        obj.by = session.user.username
         obj.reason = session.reason;
       } else {
-        obj.__user = session.name;
+        obj.__user = session.user.username;
         obj.__reason = session.reason;
       }
     }
@@ -343,7 +343,7 @@ const UndoHelper = {
               // rec.markModified(replaceField[fieldIndex]);
             }
           }
-          rec.__user = session.name;
+          rec.__user = session.user.username;
           rec.__reason = session.reason;
           return rec;
         }

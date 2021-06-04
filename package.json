@@ -1,6 +1,6 @@
 {
   "name": "mongoose-undo",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Mongoose plugin for undo with session management",
   "main": "src/mongoose-undo.js",
   "scripts": {
@@ -11,21 +11,21 @@
   "author": "Jay McAnser",
   "license": "MIT",
   "dependencies": {
-    "config": "^3.3.1",
+    "config": "^3.3.6",
     "error-types": "git+https://github.com/jaymcanser/error-types.git",
     "jsondiffpatch": "^0.4.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "logger": "git+https://github.com/jaymcanser/logger.git",
-    "mongoose": "^5.9.9",
+    "mongoose": "^5.12.12",
     "mongoose-diff-history": "git+https://github.com/JayMcAnser/mongoose-diff-history.git"
   },
   "devDependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "chai-http": "^4.3.0",
-    "mocha": "^7.1.1"
+    "mocha": "^7.2.0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/JayMcAnser/mongoose-undo-plugin.git"
+    "type": "git",
+    "url": "https://github.com/JayMcAnser/mongoose-undo-plugin.git"
   }
 }

@@ -47,7 +47,7 @@ describe('model.address', () => {
     it('has history', async () => {
       let hist = await address.history()
       assert.equal(hist.length, 3);
-      assert.equal(hist[0].changedBy, session.name)
+      assert.equal(hist[0].changedBy, session.user.username)
     });
 
     it('not found queryOne', async() => {
