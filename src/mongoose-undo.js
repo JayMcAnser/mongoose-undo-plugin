@@ -1,11 +1,12 @@
 /**
  * building a session defined undo structure for any type of Mongoose record
  *
- * version 0.1 Jay McAnser 202-04-22 - initial setup
+ * version 0.1 Jay McAnser 2020-04-22 - initial setup
  * (c) JayMcAnser MIT
  */
 
 const DiffHistory = require('mongoose-diff-history/diffHistory');
+const DiffModel = require('mongoose-diff-history/diffHistoryModel');
 const DiffPatcher = require('jsondiffpatch');
 const JsonDiffPatch = require('jsondiffpatch');
 const Mongoose = require('mongoose');
@@ -432,6 +433,7 @@ module.exports.createSchema = {
 
 module.exports.DiffHistory = DiffHistory;
 
+
 module.exports.plugin = function(schema, options) {
   schema.plugin(DiffHistory.plugin, options)
 
@@ -486,4 +488,17 @@ module.exports.plugin = function(schema, options) {
   schema.methods.session = function(session) {
     UndoHelper._assignSession(this, session);
   }
+}
+
+// ToDo: should use export but can not find the way to do it simple
+
+module.exports.Model = DiffModel;
+// from the undo model: const historySchema
+module.exports.Schema = {
+  collectionName: String,
+  collectionId: Mongoose.Types.ObjectId,
+  diff: {},
+  user: {},
+  reason: String,
+  version: { type: Number, min: 0 }
 }

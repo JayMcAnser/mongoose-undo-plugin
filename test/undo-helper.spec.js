@@ -1,8 +1,21 @@
 const chai = require('chai');
 const assert = chai.assert;
 const UndoHelper = require('../src/mongoose-undo');
+// const Schema = require('../src/mongoose-undo').Schema;
+const Model = require('../src/mongoose-undo').Model
+const Schema = require('../src/mongoose-undo').Schema
 
 describe('undo-helper', () => {
+
+  describe('exports', () => {
+    it('export Model', () => {
+      assert.isDefined(Model);
+    })
+    it('export Schema', () => {
+      assert.isDefined(Schema);
+      assert.isDefined(Schema.version);
+    })
+  })
 
   describe('calculateDiff', () => {
     it('create new', () => {
