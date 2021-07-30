@@ -435,7 +435,9 @@ module.exports.DiffHistory = DiffHistory;
 
 
 module.exports.plugin = function(schema, options) {
-  schema.plugin(DiffHistory.plugin, options)
+  // ToDo: This plugin crashes the multi DB system.
+  // So temporary blocked
+  // schema.plugin(DiffHistory.plugin, options)
 
   schema.statics.queryOne = function(session, where, fields, options) {
     return UndoHelper.queryOne(session, this, where, fields, options);
